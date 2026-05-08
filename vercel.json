@@ -19,8 +19,6 @@
         "APP_URL": "https://retail-pro.vercel.app",
         "APP_KEY": "base64:gyYx4wROVqvTu82kxoB9DGJBDl7Lkjth1wN5wE5Eva0=",
         "LOG_CHANNEL": "stderr",
-        "DB_CONNECTION": "pgsql",
-        "DB_HOST": "127.0.0.1",
         "SESSION_DRIVER": "cookie",
         "VIEW_COMPILED_PATH": "/tmp",
         "CACHE_DRIVER": "array"
