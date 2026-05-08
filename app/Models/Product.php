@@ -104,7 +104,7 @@ class Product extends Model
             return $this->defaultPlaceholder();
         }
 
-        return asset($path);
+        return url($path);
     }
 
     /**
@@ -112,7 +112,7 @@ class Product extends Model
      */
     private function defaultPlaceholder()
     {
-        return 'https://placehold.co/600x400?text=' . urlencode($this->name);
+        return 'https://images.unsplash.com/photo-1512428559083-5d04d33a6e6a?q=80&w=200&auto=format&fit=crop';
     }
 
     /**

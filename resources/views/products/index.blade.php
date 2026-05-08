@@ -97,7 +97,7 @@
                     <tr>
                         <td class="ps-4 text-center">
                             @if($product->image_url)
-                                <img src="{{ asset($product->image_url) }}" 
+                                <img src="{{ $product->image_url }}" 
                                      class="img-product-table" 
                                      alt="{{ $product->name }}"
                                      onerror="this.onerror=null;this.src='https://placehold.co/200x200?text=No+Image';">
