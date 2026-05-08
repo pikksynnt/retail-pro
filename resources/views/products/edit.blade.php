@@ -113,6 +113,11 @@
                         </div>
                     </div>
 
+                    <div class="mb-4">
+                        <label class="form-label text-uppercase">Deskripsi Produk (Marketplace)</label>
+                        <textarea name="description" class="form-control" rows="4" placeholder="Jelaskan detail produkmu di sini..." required>{{ old('description', $product->description) }}</textarea>
+                    </div>
+
                     <div class="row g-4 mb-5">
                         <div class="col-md-6">
                             <label class="form-label text-uppercase">Stok Barang</label>
