@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('vendors', function (Blueprint $table) {
-            $table->string('identity_number')->after('shop_name'); // NIK
+            $table->string('identity_number')->after('shop_name')->nullable(); // NIK
             $table->string('identity_file')->after('logo')->nullable(); // Foto KTP
         });
     }
