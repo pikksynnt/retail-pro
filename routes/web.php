@@ -130,8 +130,8 @@ Route::middleware(['auth'])->group(function () {
 // =========================================================================
 Route::get('/gas-migrate', function() {
     try {
-        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
-        return "<h2>Database BERHASIL di-update!</h2><p>Sekarang silakan buka halaman depan bro!</p><a href='/'>Klik di sini ke Halaman Depan</a>";
+        \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);
+        return "<h2>Database BERHASIL di-reset dan di-isi data awal (Seeder)!</h2><p>Sekarang silakan login pake akun admin bro!</p><a href='/login'>Klik di sini ke Login</a>";
     } catch (\Exception $e) {
         return "<h2>Gagal update database!</h2><p>Pesan eror: " . $e->getMessage() . "</p>";
     }
