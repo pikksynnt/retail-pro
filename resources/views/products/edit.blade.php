@@ -85,14 +85,15 @@
                         
                         <div class="col-md-12">
                             <label class="form-label text-uppercase">Kategori Produk</label>
-                            <select name="category_id" class="form-select" required>
-                                <option value="">-- Pilih Kategori --</option>
+                            <input type="text" name="category_name" class="form-control" 
+                                   value="{{ old('category_name', $product->category->name ?? '') }}" 
+                                   placeholder="Ketik kategori baru atau pilih yang tersedia..."
+                                   list="categoryList" required>
+                            <datalist id="categoryList">
                                 @foreach($categories as $cat)
-                                    <option value="{{ $cat->id }}" {{ $product->category_id == $cat->id ? 'selected' : '' }}>
-                                        {{ $cat->name }}
-                                    </option>
+                                    <option value="{{ $cat->name }}">
                                 @endforeach
-                            </select>
+                            </datalist>
                         </div>
                     </div>
 
