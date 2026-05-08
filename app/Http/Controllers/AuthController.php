@@ -149,13 +149,14 @@ class AuthController extends Controller
                 $file = $request->file('identity_file');
                 $ktpFilename = time() . '_ktp_' . Str::slug($request->shop_name) . '.' . $file->getClientOriginalExtension();
                 
-                $path = public_path('uploads/identitas');
-                
-                if (!File::isDirectory($path)) {
-                    File::makeDirectory($path, 0755, true, true);
+                // JANGAN UPLOAD KE PUBLIC DI VERCEL (Karena Read-Only)
+                if (!env('VERCEL')) {
+                    $path = public_path('uploads/identitas');
+                    if (!File::isDirectory($path)) {
+                        File::makeDirectory($path, 0755, true, true);
+                    }
+                    $file->move($path, $ktpFilename);
                 }
-
-                $file->move($path, $ktpFilename);
             }
 
             // 5. Buat Profil Vendor
