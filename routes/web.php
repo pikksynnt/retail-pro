@@ -124,3 +124,15 @@ Route::middleware(['auth'])->group(function () {
         });
     });
 });
+
+// =========================================================================
+// TOMBOL SAKTI: MIGRATE DARI BROWSER (KHUSUS VERCEL)
+// =========================================================================
+Route::get('/gas-migrate', function() {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        return "<h2>Database BERHASIL di-update!</h2><p>Sekarang silakan buka halaman depan bro!</p><a href='/'>Klik di sini ke Halaman Depan</a>";
+    } catch (\Exception $e) {
+        return "<h2>Gagal update database!</h2><p>Pesan eror: " . $e->getMessage() . "</p>";
+    }
+});
