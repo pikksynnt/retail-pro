@@ -18,8 +18,8 @@ use App\Http\Controllers\{
 /**
  * IMPORT CONTROLLER KHUSUS ADMIN
  */
-use App\Http\Controllers\Admin\AdminVendorController;
-use App\Http\Controllers\Admin\AdminReportController;
+use App\Http\Controllers\admin\AdminVendorController;
+use App\Http\Controllers\admin\AdminReportController;
 
 /*
 |--------------------------------------------------------------------------
