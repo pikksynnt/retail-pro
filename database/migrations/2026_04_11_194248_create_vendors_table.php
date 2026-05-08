@@ -20,6 +20,7 @@ return new class extends Migration
         $table->string('slug')->unique(); // buat URL lapak (misal: /toko/keripik-enak)
         $table->text('description')->nullable();
         $table->string('address')->nullable();
+        $table->string('phone')->nullable();
         $table->string('logo')->nullable();
         $table->enum('status', ['pending', 'verified'])->default('pending');
         $table->timestamps();
