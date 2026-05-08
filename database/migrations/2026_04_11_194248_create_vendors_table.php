@@ -22,7 +22,7 @@ return new class extends Migration
         $table->string('address')->nullable();
         $table->string('phone')->nullable();
         $table->string('logo')->nullable();
-        $table->enum('status', ['pending', 'verified'])->default('pending');
+        $table->enum('status', ['pending', 'verified', 'active'])->default('pending');
         $table->timestamps();
     });
     }
