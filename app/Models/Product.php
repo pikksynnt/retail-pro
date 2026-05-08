@@ -94,11 +94,15 @@ class Product extends Model
      */
     public function getImageUrlAttribute()
     {
+        // JIKA DI VERCEL, LANGSUNG KASIH PLACEHOLDER (Karena gak ada file fisik)
+        if (env('VERCEL')) {
+            return $this->defaultPlaceholder();
+        }
+
         if (empty($this->image)) {
             return $this->defaultPlaceholder();
         }
 
-        // Cek file di storage/app/public/products/
         $path = 'storage/products/' . $this->image;
         if (!file_exists(public_path($path))) {
             return $this->defaultPlaceholder();
@@ -112,7 +116,7 @@ class Product extends Model
      */
     private function defaultPlaceholder()
     {
-        return 'https://images.unsplash.com/photo-1512428559083-5d04d33a6e6a?q=80&w=200&auto=format&fit=crop';
+        return 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=200&auto=format&fit=crop';
     }
 
     /**
