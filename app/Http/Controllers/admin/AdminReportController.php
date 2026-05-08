@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
@@ -39,7 +39,7 @@ class AdminReportController extends Controller
         $vendorPerformance = Vendor::withCount(['orders' => function($q) {
                 $q->where('orders.status', 'completed');
             }])
-            ->addSelect(['total_sales' => Order::selectRaw('IFNULL(sum(total_price), 0)')
+            ->addSelect(['total_sales' => Order::selectRaw('COALESCE(sum(total_price), 0)')
                 ->whereColumn('vendor_id', 'vendors.id')
                 ->where('orders.status', 'completed')
             ])
@@ -65,7 +65,7 @@ class AdminReportController extends Controller
         // 5. Produk Paling Laris (Top 5)
         $topProducts = Product::with(['vendor'])
             ->withCount(['orderItems as total_sold' => function($q) {
-                $q->select(DB::raw('IFNULL(sum(quantity), 0)'))
+                $q->select(DB::raw('COALESCE(sum(quantity), 0)'))
                   ->join('orders', 'order_items.order_id', '=', 'orders.id')
                   ->where('orders.status', 'completed');
             }])
