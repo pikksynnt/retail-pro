@@ -131,7 +131,8 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/gas-migrate', function() {
     try {
         \Illuminate\Support\Facades\Artisan::call('migrate:fresh', ['--seed' => true, '--force' => true]);
-        return "<h2>Database BERHASIL di-reset dan di-isi data awal (Seeder)!</h2><p>Sekarang silakan login pake akun admin bro!</p><a href='/login'>Klik di sini ke Login</a>";
+        \App\Models\User::updateOrCreate(['email' => 'admin@gmail.com'], ['name' => 'Admin', 'password' => \Illuminate\Support\Facades\Hash::make('password123'), 'role' => 'admin', 'is_verified' => true]);
+        return "<h2>Database BERHASIL!</h2><p>Login: <b>admin@gmail.com</b> | Pass: <b>password123</b></p><a href='/login'>Ke Login</a>";
     } catch (\Exception $e) {
         return "<h2>Gagal update database!</h2><p>Pesan eror: " . $e->getMessage() . "</p>";
     }
