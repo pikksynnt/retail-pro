@@ -144,15 +144,22 @@ class ProductController extends Controller
     {
         $filename = time() . "_" . Str::slug($name) . '.' . $file->getClientOriginalExtension();
         $path = public_path('storage/products');
-        if (!File::isDirectory($path)) { File::makeDirectory($path, 0755, true, true); }
-        $file->move($path, $filename);
+        
+        // JANGAN UPLOAD KE PUBLIC DI VERCEL (Karena Read-Only)
+        if (!env('VERCEL')) {
+            if (!File::isDirectory($path)) { File::makeDirectory($path, 0755, true, true); }
+            $file->move($path, $filename);
+        }
+        
         return $filename;
     }
 
     private function deleteOldFile($filename)
     {
-        if ($filename && File::exists(public_path('storage/products/' . $filename))) {
-            File::delete(public_path('storage/products/' . $filename));
+        if (!env('VERCEL')) {
+            if ($filename && File::exists(public_path('storage/products/' . $filename))) {
+                File::delete(public_path('storage/products/' . $filename));
+            }
         }
     }
 }
