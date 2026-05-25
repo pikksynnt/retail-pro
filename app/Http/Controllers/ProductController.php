@@ -58,7 +58,7 @@ class ProductController extends Controller
             'price_eceran'  => 'required|numeric|min:0',
             'stock'         => 'required|integer|min:0',
             'image'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'image_url'     => 'nullable|url',
+            'image_url'     => 'nullable|string',
             'description'   => 'required|string',
         ]);
 
@@ -84,17 +84,16 @@ class ProductController extends Controller
             }
 
             Product::create([
-                'vendor_id'          => $vendor->id,
-                'category_id'        => $category->id,
-                'barcode'            => $request->barcode,
-                'name'               => $request->name,
-                'description'        => $request->description,
-                'image'              => $imageName,
-                'external_image_url' => $request->image_url,
-                'stock'              => $request->stock,
-                'price_eceran'       => $request->price_eceran,
-                'unit'               => $request->unit ?? 'pcs',
-                'min_stock'          => $request->min_stock ?? 5,
+                'vendor_id'    => $vendor->id,
+                'category_id'  => $category->id,
+                'barcode'      => $request->barcode,
+                'name'         => $request->name,
+                'description'  => $request->description,
+                'image'        => $request->image_url ?: $imageName,
+                'stock'        => $request->stock,
+                'price_eceran' => $request->price_eceran,
+                'unit'         => $request->unit ?? 'pcs',
+                'min_stock'    => $request->min_stock ?? 5,
             ]);
 
             DB::commit();
@@ -130,7 +129,7 @@ class ProductController extends Controller
             'price_eceran'  => 'required|numeric|min:0',
             'stock'         => 'required|integer|min:0',
             'image'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-            'image_url'     => 'nullable|url',
+            'image_url'     => 'nullable|string',
         ]);
 
         try {
@@ -153,7 +152,10 @@ class ProductController extends Controller
             ]);
 
             $data['category_id'] = $category->id;
-            $data['external_image_url'] = $request->image_url;
+
+            if ($request->filled('image_url')) {
+                $data['image'] = $request->image_url;
+            }
 
             if ($request->hasFile('image')) {
                 $this->deleteOldFile($product->image);
@@ -201,8 +203,8 @@ class ProductController extends Controller
 
     private function deleteOldFile($filename)
     {
-        if (!env('VERCEL')) {
-            if ($filename && File::exists(public_path('storage/products/' . $filename))) {
+        if (!env('VERCEL') && $filename && !str_starts_with($filename, 'http')) {
+            if (File::exists(public_path('storage/products/' . $filename))) {
                 File::delete(public_path('storage/products/' . $filename));
             }
         }

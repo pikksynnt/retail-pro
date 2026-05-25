@@ -16,7 +16,6 @@ class Product extends Model
         'name',
         'description',
         'image',
-        'external_image_url',
         'category_id',
         'stock',
         'min_stock',
@@ -58,11 +57,13 @@ class Product extends Model
 
     public function getImageUrlAttribute()
     {
-        if (!empty($this->external_image_url)) {
-            return $this->external_image_url;
+        // Kalau kolom image berisi link online, langsung pakai link itu
+        if (!empty($this->image) && str_starts_with($this->image, 'http')) {
+            return $this->image;
         }
 
-        if (!env('VERCEL') && !empty($this->image)) {
+        // Kalau lokal, ambil dari storage/products
+        if (!empty($this->image) && !env('VERCEL')) {
             $path = 'storage/products/' . $this->image;
 
             if (file_exists(public_path($path))) {
