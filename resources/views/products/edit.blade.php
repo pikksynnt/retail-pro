@@ -106,7 +106,7 @@
                             <div class="d-flex align-items-center gap-4">
                                 <div class="text-center">
                                     <img 
-                                        src="{{ old('image_url', $product->image_url) ?: ($product->image ? asset('storage/products/' . $product->image) : 'https://via.placeholder.com/100?text=No+Img') }}" 
+                                        src="{{ old('image_url', $product->external_image_url ?? '') ?: $product->image_url }}"
                                         class="current-img border shadow-sm" 
                                         id="previewImage"
                                         onerror="this.src='https://via.placeholder.com/100?text=No+Img'"
@@ -123,12 +123,12 @@
                             <div class="mt-4">
                                 <label class="form-label text-uppercase">URL Gambar Produk</label>
                                 <input 
-                                    type="text"
-                                    name="image_url"
-                                    class="form-control"
-                                    placeholder="https://i.ibb.co/contoh/gambar.jpg"
-                                    value="{{ old('image_url', $product->image_url ?? '') }}"
-                                    id="imageUrlInput"
+                                type="text"
+                                name="image_url"
+                                class="form-control"
+                                placeholder="https://i.ibb.co/contoh/gambar.jpg"
+                                value="{{ old('image_url', $product->external_image_url ?? '') }}"
+                                id="imageUrlInput"
                                 >
                                 <small class="text-muted">
                                     Untuk Vercel, tempel direct link gambar dari ImgBB/Postimages agar muncul di landing page.
