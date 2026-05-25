@@ -29,7 +29,6 @@ class ProductController extends Controller
         }
 
         $products = $query->get();
-
         return view('products.index', compact('products'));
     }
 
@@ -74,13 +73,8 @@ class ProductController extends Controller
 
         try {
             $category = Category::firstOrCreate(
-                [
-                    'name' => $request->category_name,
-                    'vendor_id' => $vendor->id
-                ],
-                [
-                    'slug' => Str::slug($request->category_name) . '-' . Str::random(5)
-                ]
+                ['name' => $request->category_name, 'vendor_id' => $vendor->id],
+                ['slug' => Str::slug($request->category_name) . '-' . Str::random(5)]
             );
 
             $imageName = null;
@@ -90,25 +84,23 @@ class ProductController extends Controller
             }
 
             Product::create([
-                'vendor_id'    => $vendor->id,
-                'category_id'  => $category->id,
-                'barcode'      => $request->barcode,
-                'name'         => $request->name,
-                'description'  => $request->description,
-                'image'        => $imageName,
-                'image_url'    => $request->image_url,
-                'stock'        => $request->stock,
-                'price_eceran' => $request->price_eceran,
-                'unit'         => $request->unit ?? 'pcs',
-                'min_stock'    => $request->min_stock ?? 5,
+                'vendor_id'          => $vendor->id,
+                'category_id'        => $category->id,
+                'barcode'            => $request->barcode,
+                'name'               => $request->name,
+                'description'        => $request->description,
+                'image'              => $imageName,
+                'external_image_url' => $request->image_url,
+                'stock'              => $request->stock,
+                'price_eceran'       => $request->price_eceran,
+                'unit'               => $request->unit ?? 'pcs',
+                'min_stock'          => $request->min_stock ?? 5,
             ]);
 
             DB::commit();
-
             return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan!');
         } catch (\Exception $e) {
             DB::rollback();
-
             return back()->withInput()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
@@ -146,13 +138,8 @@ class ProductController extends Controller
             $vendorId = ($user->role === 'admin') ? $product->vendor_id : $user->vendor->id;
 
             $category = Category::firstOrCreate(
-                [
-                    'name' => $request->category_name,
-                    'vendor_id' => $vendorId
-                ],
-                [
-                    'slug' => Str::slug($request->category_name) . '-' . Str::random(5)
-                ]
+                ['name' => $request->category_name, 'vendor_id' => $vendorId],
+                ['slug' => Str::slug($request->category_name) . '-' . Str::random(5)]
             );
 
             $data = $request->only([
@@ -163,10 +150,10 @@ class ProductController extends Controller
                 'unit',
                 'min_stock',
                 'description',
-                'image_url',
             ]);
 
             $data['category_id'] = $category->id;
+            $data['external_image_url'] = $request->image_url;
 
             if ($request->hasFile('image')) {
                 $this->deleteOldFile($product->image);
@@ -201,7 +188,6 @@ class ProductController extends Controller
         $filename = time() . "_" . Str::slug($name) . '.' . $file->getClientOriginalExtension();
         $path = public_path('storage/products');
 
-        // JANGAN UPLOAD KE PUBLIC DI VERCEL (Karena Read-Only)
         if (!env('VERCEL')) {
             if (!File::isDirectory($path)) {
                 File::makeDirectory($path, 0755, true, true);
@@ -214,11 +200,11 @@ class ProductController extends Controller
     }
 
     private function deleteOldFile($filename)
-{
-    if (!env('VERCEL')) {
-        if ($filename && File::exists(public_path('storage/products/' . $filename))) {
-            File::delete(public_path('storage/products/' . $filename));
+    {
+        if (!env('VERCEL')) {
+            if ($filename && File::exists(public_path('storage/products/' . $filename))) {
+                File::delete(public_path('storage/products/' . $filename));
+            }
         }
     }
- }
 }
