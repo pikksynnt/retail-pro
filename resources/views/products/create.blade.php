@@ -165,9 +165,23 @@
                                 </div>
                             </div>
 
-                            <label class="form-label text-uppercase">Upload Foto Utama</label>
-                            <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" id="imageInput" accept="image/*">
-                            @error('image') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                           <label class="form-label text-uppercase">Upload Foto Utama</label>
+                                <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" id="imageInput" accept="image/*">
+                                @error('image') <div class="invalid-feedback">{{ $message }}</div> @enderror
+
+                            <label class="form-label text-uppercase mt-4">URL Gambar Produk</label>
+                                <input 
+                                    type="text" 
+                                    name="image_url" 
+                                    class="form-control @error('image_url') is-invalid @enderror" 
+                                    placeholder="https://i.ibb.co/contoh/gambar.jpg"
+                                    value="{{ old('image_url') }}"
+                                >
+
+                                <small class="text-muted d-block mt-2">
+                                    Untuk Vercel, pakai link gambar dari ImgBB/Postimages agar gambar muncul di landing page.
+                                </small>
+                                  @error('image_url') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             
                             <div class="mt-4 p-3 bg-light rounded-4">
                                 <ul class="small text-muted mb-0 ps-3">

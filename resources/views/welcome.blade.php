@@ -184,8 +184,7 @@
                         <div class="product-card bg-white rounded-4xl border border-slate-50 overflow-hidden flex flex-col group shadow-sm hover:shadow-2xl hover:shadow-slate-200/50">
                             <div class="relative p-4">
                                 <div class="relative overflow-hidden rounded-3xl aspect-[4/3] bg-slate-100">
-                                    <img src="{{ $product->image ? asset('storage/products/' . $product->image) : 'https://placehold.co/600x400?text=Premium+Product' }}" 
-                                         alt="{{ $product->name }}"
+                                    <img src="{{ asset($product->image_url) }}" alt="{{ $product->name }}" 
                                          class="w-full h-full object-cover group-hover:scale-110 transition duration-700 ease-in-out"
                                          onerror="this.src='https://placehold.co/600x400?text=Premium+Product';">
                                     <div class="absolute top-4 left-4">

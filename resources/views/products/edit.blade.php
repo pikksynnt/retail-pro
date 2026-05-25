@@ -36,7 +36,8 @@
         background: #fff;
     }
     .current-img {
-        max-height: 100px;
+        width: 120px;
+        height: 100px;
         border-radius: 12px;
         object-fit: cover;
     }
@@ -78,6 +79,7 @@
                             <input type="text" name="barcode" class="form-control" value="{{ old('barcode', $product->barcode) }}" required>
                             <small class="text-muted" style="font-size: 10px;">Barcode harus unik dan tidak boleh sama dengan barang lain.</small>
                         </div>
+
                         <div class="col-md-6">
                             <label class="form-label text-uppercase">Nama Barang</label>
                             <input type="text" name="name" class="form-control" value="{{ old('name', $product->name) }}" required>
@@ -99,16 +101,38 @@
 
                     <div class="mb-4">
                         <label class="form-label text-uppercase">Foto Produk</label>
+
                         <div class="image-preview-wrapper">
                             <div class="d-flex align-items-center gap-4">
                                 <div class="text-center">
-                                    <img src="{{ $product->image_url }}" class="current-img border shadow-sm" onerror="this.src='https://via.placeholder.com/100?text=No+Img'">
+                                    <img 
+                                        src="{{ old('image_url', $product->image_url) ?: ($product->image ? asset('storage/products/' . $product->image) : 'https://via.placeholder.com/100?text=No+Img') }}" 
+                                        class="current-img border shadow-sm" 
+                                        id="previewImage"
+                                        onerror="this.src='https://via.placeholder.com/100?text=No+Img'"
+                                    >
                                     <div class="mt-1 text-muted" style="font-size: 9px;">PREVIEW</div>
                                 </div>
+
                                 <div class="flex-grow-1">
-                                    <input type="file" name="image" class="form-control">
+                                    <input type="file" name="image" class="form-control" id="imageInput">
                                     <small class="text-muted">Abaikan jika tidak ingin mengganti foto produk.</small>
                                 </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <label class="form-label text-uppercase">URL Gambar Produk</label>
+                                <input 
+                                    type="text"
+                                    name="image_url"
+                                    class="form-control"
+                                    placeholder="https://i.ibb.co/contoh/gambar.jpg"
+                                    value="{{ old('image_url', $product->image_url ?? '') }}"
+                                    id="imageUrlInput"
+                                >
+                                <small class="text-muted">
+                                    Untuk Vercel, tempel direct link gambar dari ImgBB/Postimages agar muncul di landing page.
+                                </small>
                             </div>
                         </div>
                     </div>
@@ -123,6 +147,7 @@
                             <label class="form-label text-uppercase">Stok Barang</label>
                             <input type="number" name="stock" class="form-control" value="{{ old('stock', $product->stock) }}" required>
                         </div>
+
                         <div class="col-md-6">
                             <label class="form-label text-uppercase">Harga Jual (Rp)</label>
                             <input type="number" name="price_eceran" class="form-control" value="{{ old('price_eceran', $product->price_eceran) }}" required>
@@ -137,4 +162,23 @@
         </div>
     </div>
 </div>
+
+<script>
+    const imageInput = document.getElementById('imageInput');
+    const imageUrlInput = document.getElementById('imageUrlInput');
+    const previewImage = document.getElementById('previewImage');
+
+    imageInput.addEventListener('change', function () {
+        const [file] = this.files;
+        if (file) {
+            previewImage.src = URL.createObjectURL(file);
+        }
+    });
+
+    imageUrlInput.addEventListener('input', function () {
+        if (this.value.trim() !== '') {
+            previewImage.src = this.value.trim();
+        }
+    });
+</script>
 @endsection
