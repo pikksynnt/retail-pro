@@ -47,24 +47,57 @@
                     <span class="text-xl font-extrabold tracking-tight text-dark-slate uppercase">Retail<span class="text-primary">Pro</span></span>
                 </a>
 
-                <div class="flex items-center gap-6">
-                    @auth
-                        @if(Auth::user()->role == 'vendor' || Auth::user()->role == 'admin')
-                            <a href="{{ route('dashboard') }}" class="flex items-center gap-2 bg-dark-slate text-white px-5 py-2.5 rounded-2xl font-bold text-sm hover:bg-opacity-90 transition-all shadow-xl shadow-slate-200">
-                                <i class="fa fa-layer-group opacity-70"></i> Dashboard
-                            </a>
-                        @else
-                            <a href="{{ route('cart.index') }}" class="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-2xl font-bold text-sm hover:brightness-110 transition-all shadow-xl shadow-indigo-100">
-                                <i class="fa fa-shopping-cart opacity-70"></i> Keranjang Saya
-                            </a>
-                        @endif
-                    @else
-                        <a href="{{ route('login') }}" class="text-slate-500 font-bold hover:text-primary transition-colors text-sm">Sign In</a>
-                        <a href="{{ route('register.customer') }}" class="text-primary font-bold hover:text-dark transition-colors text-sm">Daftar</a>
-                        <a href="{{ route('register') }}" class="bg-primary text-white px-6 py-3 rounded-2xl font-bold text-sm shadow-lg shadow-indigo-100 hover:shadow-indigo-200 transition-all active:scale-95">
-                            Join Merchant
-                        </a>
-                    @endauth
+                <div class="flex items-center gap-4">
+                            @auth
+
+                                @if(Auth::user()->role == 'vendor' || Auth::user()->role == 'admin')
+
+                                    <a href="{{ route('dashboard') }}" 
+                                    class="flex items-center gap-2 bg-dark-slate text-white px-5 py-2.5 rounded-2xl font-bold text-sm hover:bg-opacity-90 transition-all shadow-xl shadow-slate-200">
+                                        <i class="fa fa-layer-group opacity-70"></i>
+                                        Dashboard
+                                    </a>
+
+                                @else
+
+                                    <a href="{{ route('cart.index') }}" 
+                                    class="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-2xl font-bold text-sm hover:brightness-110 transition-all shadow-xl shadow-indigo-100">
+                                        <i class="fa fa-shopping-cart opacity-70"></i>
+                                        Keranjang Saya
+                                    </a>
+
+                                @endif
+
+                                {{-- LOGOUT BUTTON --}}
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button 
+                                        type="submit"
+                                        class="flex items-center gap-2 bg-red-500 text-white px-5 py-2.5 rounded-2xl font-bold text-sm hover:bg-red-600 transition-all shadow-xl shadow-red-100 active:scale-95"
+                                    >
+                                        <i class="fa fa-sign-out-alt opacity-80"></i>
+                                        Logout
+                                    </button>
+                                </form>
+
+                            @else
+
+                                <a href="{{ route('login') }}" 
+                                class="text-slate-500 font-bold hover:text-primary transition-colors text-sm">
+                                    Sign In
+                                </a>
+
+                                <a href="{{ route('register.customer') }}" 
+                                class="text-primary font-bold hover:text-dark transition-colors text-sm">
+                                    Daftar
+                                </a>
+
+                                <a href="{{ route('register') }}" 
+                                class="bg-primary text-white px-6 py-3 rounded-2xl font-bold text-sm shadow-lg shadow-indigo-100 hover:shadow-indigo-200 transition-all active:scale-95">
+                                    Join Merchant
+                                </a>
+
+                            @endauth
                 </div>
             </div>
         </div>
